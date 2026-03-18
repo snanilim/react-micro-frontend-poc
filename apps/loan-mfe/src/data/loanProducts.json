@@ -1,0 +1,46 @@
+[
+  {
+    "id": "personal",
+    "name": "Personal Loan",
+    "description": "Quick personal loan for your immediate needs with flexible repayment options.",
+    "interestRate": 12.5,
+    "minAmount": 50000,
+    "maxAmount": 2000000,
+    "minTenure": 6,
+    "maxTenure": 60,
+    "icon": "user"
+  },
+  {
+    "id": "home",
+    "name": "Home Loan",
+    "description": "Build or buy your dream home with our affordable home loan solutions.",
+    "interestRate": 9.0,
+    "minAmount": 500000,
+    "maxAmount": 20000000,
+    "minTenure": 12,
+    "maxTenure": 300,
+    "icon": "home"
+  },
+  {
+    "id": "auto",
+    "name": "Auto Loan",
+    "description": "Drive your dream car with our easy auto loan facility.",
+    "interestRate": 10.5,
+    "minAmount": 200000,
+    "maxAmount": 5000000,
+    "minTenure": 12,
+    "maxTenure": 72,
+    "icon": "car"
+  },
+  {
+    "id": "education",
+    "name": "Education Loan",
+    "description": "Invest in your future with our education financing options.",
+    "interestRate": 7.5,
+    "minAmount": 100000,
+    "maxAmount": 3000000,
+    "minTenure": 12,
+    "maxTenure": 84,
+    "icon": "book"
+  }
+]

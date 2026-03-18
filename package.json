@@ -1,0 +1,15 @@
+{
+  "name": "brac-mfe-project",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "dev:shell": "pnpm --filter @brac/app-shell dev",
+    "dev:loan": "pnpm --filter @brac/loan-mfe dev",
+    "dev:onboarding": "pnpm --filter @brac/onboarding-mfe dev"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=9"
+  }
+}
