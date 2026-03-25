@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useNotificationStore } from "./notificationStore";
 
 export interface LoanProduct {
   id: string;
@@ -66,7 +67,13 @@ function createLoanStore() {
       set((state) => ({
         personalInfo: { ...state.personalInfo, ...info },
       })),
-    submitLoan: () => set({ isSubmitted: true }),
+    submitLoan: () => {
+      const state = store.getState();
+      set({ isSubmitted: true });
+      useNotificationStore.getState().addNotification(
+        `Loan application submitted for ${state.selectedProduct?.name || "loan"}`,
+      );
+    },
     resetLoan: () => set(initialState),
   }));
 

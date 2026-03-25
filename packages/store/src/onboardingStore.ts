@@ -1,5 +1,6 @@
 import { create, type StoreApi, type UseBoundStore } from "zustand";
 import { useUserProfileStore } from "./userProfileStore";
+import { useNotificationStore } from "./notificationStore";
 
 export interface PersonalInfo {
   fullName: string;
@@ -127,6 +128,9 @@ function createOnboardingStore(): OnboardingBoundStore {
         isOnboarded: true,
       });
       set({ isSubmitted: true });
+      useNotificationStore.getState().addNotification(
+        `Onboarding completed for ${state.personalInfo.fullName}`,
+      );
     },
     resetOnboarding: () => set(initialState),
   }));
