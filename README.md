@@ -1,5 +1,66 @@
 # BRAC Banking Micro-Frontend POC
 
+## Handling Shared User Info UI
+
+- **Separate MFE** — Use when user profile is a full-featured module (edit profile, settings, password change) owned by a dedicated team.
+- **Shared component in `@brac/ui-library`** — Use when it's just a reusable widget (e.g. user info card) displayed across multiple MFEs. Simpler and avoids unnecessary overhead.
+
+
+## How to Load One MFE Inside Another MFE
+
+By default, only the app-shell (host) loads MFEs. But you can also load one MFE inside another. Here's how:
+
+### 1. Add the remote in `vite.config.ts`
+
+In the MFE that wants to consume another, add the remote in the `federation()` config:
+
+```ts
+// apps/onboarding-mfe/vite.config.ts
+federation({
+  name: "onboarding_mfe",
+  filename: "remoteEntry.js",
+  exposes: { "./App": "./src/App.tsx" },  // still a remote itself
+  remotes: {                               // now also a host
+    loan_mfe: {
+      type: "module",
+      name: "loan_mfe",
+      entry: "http://localhost:3001/remoteEntry.js",
+      entryGlobalName: "loan_mfe",
+      shareScope: "default",
+    },
+  },
+  shared: { react: { singleton: true }, ... },
+})
+```
+
+### 2. Add TypeScript type declaration
+
+Create `src/types/remote-apps.d.ts` in the consuming MFE:
+
+```ts
+declare module "loan_mfe/App" {
+  const LoanApp: React.ComponentType;
+  export default LoanApp;
+}
+```
+
+This tells TypeScript the module exists (it's loaded at runtime via Module Federation, not from `node_modules`).
+
+### 3. Use it with lazy loading
+
+```tsx
+const LoanApp = React.lazy(() => import("loan_mfe/App"));
+
+<Suspense fallback={<div>Loading...</div>}>
+  <LoanApp />
+</Suspense>
+```
+
+### Important
+
+- The remote MFE's dev server must be running (e.g. loan-mfe on `:3001`)
+- Keep `singleton: true` for shared libs (react, zustand) to avoid duplicate instances
+
 A Banking Micro-Frontend Application built with React, Vite Module Federation, pnpm workspace monorepo, TailwindCSS, and Zustand.
 
 ## Architecture

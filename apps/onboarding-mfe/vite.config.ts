@@ -19,6 +19,24 @@ export default defineConfig({
       exposes: {
         "./App": "./src/App.tsx",
       },
+      // remotes: {
+      //   loan_mfe: {
+      //     type: "module",
+      //     name: "loan_mfe",
+      //     entry: "http://localhost:3001/remoteEntry.js",
+      //     entryGlobalName: "loan_mfe",
+      //     shareScope: "default",
+      //   },
+      // },
+      remotes: {
+        loan_mfe: {
+          type: "module",
+          name: "loan_mfe",
+          entry: "http://localhost:3001/remoteEntry.js",
+          entryGlobalName: "loan_mfe",
+          shareScope: "default",
+        },
+      },
       shared: {
         react: { singleton: true, requiredVersion: "^19.0.0" },
         "react-dom": { singleton: true, requiredVersion: "^19.0.0" },

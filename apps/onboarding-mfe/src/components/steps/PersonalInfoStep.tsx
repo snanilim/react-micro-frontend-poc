@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { lazy, Suspense, useCallback } from "react";
 import { Input, Button, FileUploader, CameraPreview } from "@brac/ui-library";
 import { useOnboardingStore } from "@brac/store";
+const LoanApp = lazy(() => import("loan_mfe/App"));
 
 interface PersonalInfoStepProps {
   onNext: () => void;
@@ -14,12 +15,12 @@ export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
   const handleNIDFront = useCallback(
     (file: File | null) => {
       if (!file) {
-        updateField("nidInfo",{ nidFrontImage: null });
+        updateField("nidInfo", { nidFrontImage: null });
         return;
       }
       const reader = new FileReader();
       reader.onloadend = () => {
-        updateField("nidInfo",{ nidFrontImage: reader.result as string });
+        updateField("nidInfo", { nidFrontImage: reader.result as string });
       };
       reader.readAsDataURL(file);
     },
@@ -29,12 +30,12 @@ export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
   const handleNIDBack = useCallback(
     (file: File | null) => {
       if (!file) {
-        updateField("nidInfo",{ nidBackImage: null });
+        updateField("nidInfo", { nidBackImage: null });
         return;
       }
       const reader = new FileReader();
       reader.onloadend = () => {
-        updateField("nidInfo",{ nidBackImage: reader.result as string });
+        updateField("nidInfo", { nidBackImage: reader.result as string });
       };
       reader.readAsDataURL(file);
     },
@@ -43,7 +44,10 @@ export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
 
   const handleLivenessCapture = useCallback(
     (imageSrc: string) => {
-      updateField("nidInfo",{ faceLivenessImage: imageSrc, livenessVerified: true });
+      updateField("nidInfo", {
+        faceLivenessImage: imageSrc,
+        livenessVerified: true,
+      });
     },
     [updateField],
   );
@@ -61,6 +65,10 @@ export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
   return (
     <div className="space-y-8">
       {/* Personal Information */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <LoanApp />
+      </Suspense>
+      {/*<LoanApp />*/}
       <div>
         <h2 className="text-xl font-semibold text-gray-800 mb-2">
           Personal Information
@@ -73,27 +81,35 @@ export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
             label="Full Name"
             placeholder="Enter your full name"
             value={personalInfo.fullName}
-            onChange={(e) => updateField("personalInfo",{ fullName: e.target.value })}
+            onChange={(e) =>
+              updateField("personalInfo", { fullName: e.target.value })
+            }
           />
           <Input
             label="Date of Birth"
             type="date"
             value={personalInfo.dateOfBirth}
-            onChange={(e) => updateField("personalInfo",{ dateOfBirth: e.target.value })}
+            onChange={(e) =>
+              updateField("personalInfo", { dateOfBirth: e.target.value })
+            }
           />
           <Input
             label="Phone"
             type="tel"
             placeholder="01XXXXXXXXX"
             value={personalInfo.phone}
-            onChange={(e) => updateField("personalInfo",{ phone: e.target.value })}
+            onChange={(e) =>
+              updateField("personalInfo", { phone: e.target.value })
+            }
           />
           <Input
             label="Email"
             type="email"
             placeholder="you@example.com"
             value={personalInfo.email}
-            onChange={(e) => updateField("personalInfo",{ email: e.target.value })}
+            onChange={(e) =>
+              updateField("personalInfo", { email: e.target.value })
+            }
           />
         </div>
       </div>
